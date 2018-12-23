@@ -20,7 +20,8 @@ app.use("/admin", adminRoutes.router);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
-  res.status(404).sendFile(path.join(rootDir, "views", "page404.html"));
+  // res.status(404).sendFile(path.join(rootDir, "views", "page404.html"));
+  res.status(404).render("page404", { url: req.url, docTitle: "Error 404" });
 });
 
 app.listen(3000, () => {
