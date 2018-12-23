@@ -4,7 +4,7 @@ const path = require("path");
 const rootDir = require("../util/path");
 const adminData = require("./admin");
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.get("/", (req, res, next) => {
   const products = adminData.products;
