@@ -8,6 +8,7 @@ const path = require("path");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
+const errorPage = require('./controllers/page404');
 
 const app = express();
 
@@ -24,17 +25,10 @@ app.set("views", "views"); //set folder for templates (not needed, "views" is de
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public"))); //serve static files in 'public' folder. You can have multiple middlewares for different folders
 
-app.use("/admin", adminRoutes.router);
+app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
-app.use((req, res, next) => {
-  // res.status(404).sendFile(path.join(rootDir, "views", "page404.html"));
-  console.log("Error 404: page not found", req.url);
-
-  res
-    .status(404)
-    .render("page404", { url: req.url, docTitle: "Error 404", path: req.url });
-});
+app.use(errorPage.get404);
 
 app.listen(3000, () => {
   console.log("Server started. Listening on port 3000");
