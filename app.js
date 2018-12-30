@@ -1,35 +1,24 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-// const expressHbs = require("express-handlebars");
+const path = require('path');
 
-const rootDir = require("./util/path");
+const express = require('express');
+const bodyParser = require('body-parser');
 
-const path = require("path");
-
-const adminRoutes = require("./routes/admin");
-const shopRoutes = require("./routes/shop");
-const errorPage = require('./controllers/page404');
+const errorController = require('./controllers/error');
 
 const app = express();
 
-// app.engine(
-//   "handlebars",
-//   expressHbs({ layoutsDir: "views/layouts/", defaultLayout: "main-layout" })
-// );
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
-// app.set("view engine", "pug"); // set template engine
-// app.set("view engine", "handlebars");
-app.set("view engine", "ejs");
-app.set("views", "views"); //set folder for templates (not needed, "views" is default);
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public"))); //serve static files in 'public' folder. You can have multiple middlewares for different folders
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/admin", adminRoutes);
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
-app.use(errorPage.get404);
+app.use(errorController.get404);
 
-app.listen(3000, () => {
-  console.log("Server started. Listening on port 3000");
-});
+app.listen(3000,()=>{console.log('Server started, port: 3000')});

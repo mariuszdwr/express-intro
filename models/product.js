@@ -1,13 +1,19 @@
-const fs = require("fs");
-const path = require("path");
-const p = path.join(__dirname, "..", "data", "products.json");
-const getProductsFromFile = callback => {
+const fs = require('fs');
+const path = require('path');
+
+const p = path.join(
+  path.dirname(process.mainModule.filename),
+  'data',
+  'products.json'
+);
+
+const getProductsFromFile = cb => {
   fs.readFile(p, (err, fileContent) => {
-    //readFile is async function, hence callback
     if (err) {
-      return callback([]);
+      cb([]);
+    } else {
+      cb(JSON.parse(fileContent));
     }
-    return callback(JSON.parse(fileContent));
   });
 };
 
@@ -20,16 +26,23 @@ module.exports = class Product {
   }
 
   save() {
-    // products.push(this);
+    this.id = Math.random().toString();
     getProductsFromFile(products => {
       products.push(this);
       fs.writeFile(p, JSON.stringify(products), err => {
-        if (err) console.log(err);
+        console.log(err);
       });
     });
   }
 
-  static fetchAll(callback) {
-    getProductsFromFile(callback);
+  static fetchAll(cb) {
+    getProductsFromFile(cb);
   }
-};
+
+  static findById(id, cb) {
+    getProductsFromFile(products => {
+      const product = products.find(prod => prod.id===id);
+      cb(product);
+    });
+  }
+}
