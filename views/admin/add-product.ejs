@@ -10,7 +10,23 @@
         <label for="title">Title</label>
         <input type="text" name="title" id="title" />
       </div>
-      <button class="btn" type="submit">Submit</button>
+      <div class="form-control">
+        <label for="imageUrl">Image URL</label>
+        <input type="text" name="imageUrl" id="imageUrl" placeholder="/img/image.webp"/>
+      </div>
+      <div class="form-control">
+        <label for="price">Price</label>
+        <input type="number" name="price" id="price" step="0.01" />
+      </div>
+      <div class="form-control">
+        <label for="description">Description</label>
+        <textarea name="description" id="description" rows="5"></textarea>
+      </div>
+
+      
+        <button type="submit" class="btn">Submit</button>
+      
     </form>
   </main>
   <% include('../includes/end.ejs') %>
+</body>
